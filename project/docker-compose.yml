@@ -1,0 +1,81 @@
+services:
+  authentication:
+    build:
+      context: ./../authentication
+      dockerfile: ./../authentication/authentication.dockerfile
+    restart: always
+    ports:
+      - 8090:80
+    env_file:
+      - .env
+    environment:
+      - DSN=host=postgres port=5432 user=postgres password=postgres dbname=subs_auth sslmode=disable timezone=UTC connect_timeout=5
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  gateway:
+    build:
+      context: ./../gateway
+      dockerfile: ./../gateway/gateway.dockerfile
+    restart: always
+    ports:
+      - 8091:80
+    env_file:
+      - .env
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  subscription:
+    build:
+      context: ./../subscription
+      dockerfile: ./../subscription/subscription.dockerfile
+    restart: always
+    ports:
+      - 8092:80
+    stop_grace_period: 1s  # SIGKILL after 1s
+    env_file:
+      - .env
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  svc-s3:
+    build:
+      context: ./../svc-s3
+      dockerfile: ./../svc-s3/svc-s3.dockerfile
+    restart: always
+    ports:
+      - 8093:80
+    env_file:
+      - .env
+    environment:
+      - DSN=host=postgres port=5432 user=postgres password=postgres dbname=subs_svc_s3 sslmode=disable timezone=UTC connect_timeout=5
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  postgres:
+    image: m.reg.amin.run/bitnami/postgresql:16.1.0
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/bitnami/postgresql
+    ports:
+      - 5432:5432
+      - 15432:80
+    env_file:
+      - .env
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    env_file:
+      - .env
+    network_mode: service:postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres-data:
+  pgadmin_data:

@@ -1,18 +1,17 @@
 # base go image
-# FROM golang:1.23-alpine as builder
+FROM m.reg.amin.run/golang:1.23-alpine as builder
 
-# RUN mkdir /app
-# COPY . /app
-# WORKDIR /app
+RUN mkdir /app
+COPY ./ /app
+WORKDIR /app
 
-# RUN CGO_ENABLED=0 go build -o svcS3 ./cmd/api
-# RUN chmod +x /app/svcS3
+RUN CGO_ENABLED=0 go build -o ./bin/subscription ./cmd/api
+RUN chmod +x /app/bin/subscription
 
-# # build tiny docker image
+# build tiny docker image
 FROM m.reg.amin.run/alpine:3
 
-# RUN mkdir /app
-# COPY --from=builder /app/svcS3 /app
+RUN mkdir /app
+COPY --from=builder /app/bin/subscription /app
 
-# CMD ["/app/svcS3"]
-CMD ["/bin/sleep", "300000"]
+CMD ["/app/subscription"]

@@ -8,13 +8,27 @@ To start developing or running in a test environment, you need to use [devcontai
     cd project
     make up_build
     ```
-2. Go to pgadmin at localhost:15432, login to the development server using `postgres` as uesrname and passowrd.
-3. Create 3 Databases
+2. Go to pgadmin at localhost:15432 and login using this detail
+    ```yaml
+    user: admin@admin.com
+    password: admin
+    ```
+
+3. Add a server with this detail
+
+    ```yaml
+    host: localhost
+    port: 5432
+    username: postgres
+    password: postgres
+    ```
+
+4. Create 3 Databases
     - subs_auth
     - subs_svc_s3
     - subs_mgmt
 
-4. Run database migration using make command
+5. Run database migration using make command
 
     ```bash
     cd project

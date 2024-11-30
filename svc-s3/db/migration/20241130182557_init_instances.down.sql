@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS instances;
+DROP SEQUENCE IF EXISTS instance_id_seq;

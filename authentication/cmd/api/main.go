@@ -56,8 +56,6 @@ func main() {
 		Addr: fmt.Sprintf(":%s", strconv.Itoa(webPort)),
 		Handler: app.routes(),
 	}
-
-	log.Println("Kir")
 	err := srv.ListenAndServe()
 
 	if err != nil {

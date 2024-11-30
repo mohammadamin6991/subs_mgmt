@@ -26,5 +26,19 @@ func (app *Config) routes() http.Handler {
 	mux.Get("/", app.svcS32)
 	mux.Get("/admin", app.svcS32)
 
+    // Plan Routes
+    mux.Post("/plans",app.CreatePlanHandler)
+    mux.Get("/plans",app.GetAllPlansHandler)
+    mux.Get("/plans/{id}",app.GetPlanHandler)
+    mux.Put("/plans/{id}",app.UpdatePlanHandler)
+    mux.Delete("/plans/{id}",app.DeletePlanHandler)
+
+    // Instance Routes
+    mux.Post("/instances", app.CreateInstanceHandler)
+    mux.Get("/instances", app.GetAllInstancesHandler)
+    mux.Get("/instances/{id}", app.GetInstanceHandler)
+    mux.Put("/instances/{id}", app.UpdateInstanceHandler)
+    mux.Delete("/instances/{id}", app.DeleteInstanceHandler)
+
 	return mux
 }

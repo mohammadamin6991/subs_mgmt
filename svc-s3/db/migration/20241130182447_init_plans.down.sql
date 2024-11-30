@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS plans;
+DROP SEQUENCE IF EXISTS plan_id_seq;

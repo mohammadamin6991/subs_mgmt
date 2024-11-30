@@ -69,4 +69,6 @@ migrate_clean:
 	docker-compose -p subs_mgmt up -d postgres
 	sleep 1
 	migrate -path ../authentication/db/migration -database postgres://postgres:postgres@localhost:5432/subs_auth?sslmode=disable down -all
+	migrate -path ../svc-s3/db/migration -database postgres://postgres:postgres@localhost:5432/subs_svc_s3?sslmode=disable down -all
 	migrate -path ../authentication/db/migration -database postgres://postgres:postgres@127.0.0.1:5432/subs_auth?sslmode=disable up
+	migrate -path ../svc-s3/db/migration -database postgres://postgres:postgres@localhost:5432/subs_svc_s3?sslmode=disable up
